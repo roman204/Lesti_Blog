@@ -5,6 +5,11 @@ $_authorHelper = Mage::helper('blog/author');
 $_commentHelper = Mage::helper('blog/post_comment');
 ?>
 <article id="post-<?php echo $_post->getId() ?>" class="blog-post-view">
+    <?php if($imageUrl = $_post->getMainImageUrl()):?>
+        <div class="blog-entry-image">
+            <img src="<?php echo $imageUrl;?>" alt="<?php echo $_post->getTitle() ?>"/>
+        </div>
+    <?php endif;?>
     <header class="blog-entry-header page-title blog-post-title">
         <h1><?php echo $_post->getTitle() ?></h1>
         <?php if($_post->getCommentCount()): ?>
