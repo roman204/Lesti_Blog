@@ -14,9 +14,9 @@ class Lesti_Blog_Model_Post extends Mage_Core_Model_Abstract
     const ALLOW_COMMENT = 1;
     const DISALLOW_COMMENT = 0;
 
-    const CACHE_TAG              = 'blog_post';
-    protected $_cacheTag         = 'blog_post';
-    protected $_needReadMore     = false;
+    const CACHE_TAG = 'blog_post';
+    protected $_cacheTag = 'blog_post';
+    protected $_needReadMore = false;
     protected $_commentCollection;
     protected $_categoryCollection;
     protected $_tagCollection;
@@ -42,8 +42,8 @@ class Lesti_Blog_Model_Post extends Mage_Core_Model_Abstract
     {
         $url = Mage::app()->getStore()->getUrl(Mage::getStoreConfig(self::XML_PATH_BLOG_GENERAL_ROUTER)) .
             $this->getIdentifier();
-        foreach($params as $param) {
-            switch($param) {
+        foreach ($params as $param) {
+            switch ($param) {
                 case 'more':
                     $url .= '/#more-' . $this->getId();
                     break;
@@ -60,18 +60,18 @@ class Lesti_Blog_Model_Post extends Mage_Core_Model_Abstract
 
     public function getAuthorName()
     {
-        if($this->getData('author_name')) {
+        if ($this->getData('author_name')) {
             return $this->getData('author_name');
         }
         $author = $this->getAuthor();
-        if($author->getId()) {
+        if ($author->getId()) {
             return $author->getAuthorName();
         }
     }
 
     public function getAuthor()
     {
-        if(is_null($this->_author)) {
+        if (is_null($this->_author)) {
             $this->_author = Mage::getModel('blog/author')->load($this->getAuthorId());
         }
         return $this->_author;
@@ -79,7 +79,7 @@ class Lesti_Blog_Model_Post extends Mage_Core_Model_Abstract
 
     public function getCommentCollection()
     {
-        if(is_null($this->_commentCollection)) {
+        if (is_null($this->_commentCollection)) {
             $this->_commentCollection = Mage::getModel('blog/post_comment')->getCollection()
                 ->addFieldToFilter('post_id', $this->getId());
         }
@@ -98,10 +98,10 @@ class Lesti_Blog_Model_Post extends Mage_Core_Model_Abstract
 
     public function getCategoryCollection($storeId = null)
     {
-        if(is_null($this->_categoryCollection)) {
+        if (is_null($this->_categoryCollection)) {
             $this->_categoryCollection = Mage::getModel('blog/category')->getCollection()
                 ->addPostFilter($this->getId());
-            if(!is_null($storeId)) {
+            if (!is_null($storeId)) {
                 $this->_categoryCollection->addStoreFilter($storeId);
             }
         }
@@ -110,10 +110,10 @@ class Lesti_Blog_Model_Post extends Mage_Core_Model_Abstract
 
     public function getTagCollection($storeId = null)
     {
-        if(is_null($this->_tagCollection)) {
+        if (is_null($this->_tagCollection)) {
             $this->_tagCollection = Mage::getModel('blog/tag')->getCollection()
                 ->addPostFilter($this->getId());
-            if(!is_null($storeId)) {
+            if (!is_null($storeId)) {
                 $this->_tagCollection->addStoreFilter($storeId);
             }
         }
@@ -173,12 +173,14 @@ class Lesti_Blog_Model_Post extends Mage_Core_Model_Abstract
     public function getExcerpt()
     {
         $processor = Mage::helper('cms')->getPageTemplateProcessor();
+        if ($this->hasData('excerpt')) {
+            return nl2br($processor->filter($this->getData('excerpt')));
+        }
         $content = $processor->filter($this->getContent());
         $excerpt = explode('<!--more-->', $content);
         if (count($excerpt) > 1) {
             $this->_needReadMore = true;
         }
-        return $excerpt[0];
     }
 
     public function needReadMore()

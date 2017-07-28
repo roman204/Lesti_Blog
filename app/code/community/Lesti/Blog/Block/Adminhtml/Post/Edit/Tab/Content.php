@@ -1,8 +1,8 @@
 <?php
 
 class Lesti_Blog_Block_Adminhtml_Post_Edit_Tab_Content
-        extends Mage_Adminhtml_Block_Widget_Form
-        implements Mage_Adminhtml_Block_Widget_Tab_Interface
+    extends Mage_Adminhtml_Block_Widget_Form
+    implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
     /**
      * Load Wysiwyg on demand and Prepare layout
@@ -34,18 +34,26 @@ class Lesti_Blog_Block_Adminhtml_Post_Edit_Tab_Content
 
         $form->setHtmlIdPrefix('post_');
 
-        $fieldset = $form->addFieldset('content_fieldset', array('legend'=>Mage::helper('blog')->__('Content'),'class'=>'fieldset-wide'));
+        $fieldset = $form->addFieldset('content_fieldset', array('legend' => Mage::helper('blog')->__('Content'), 'class' => 'fieldset-wide'));
 
         $wysiwygConfig = Mage::getSingleton('cms/wysiwyg_config')->getConfig(
             array('tab_id' => $this->getTabId())
         );
 
+        $exceptField = $fieldset->addField('excerpt', 'textarea', array(
+            'name' => 'excerpt',
+            'label' => __('Excerpt'),
+            'style' => 'height:6em;',
+            'required' => true,
+            'disabled' => $isElementDisabled,
+        ));
+
         $contentField = $fieldset->addField('content', 'editor', array(
-            'name'      => 'content',
-            'style'     => 'height:36em;',
-            'required'  => true,
-            'disabled'  => $isElementDisabled,
-            'config'    => $wysiwygConfig
+            'name' => 'content',
+            'style' => 'height:36em;',
+            'required' => true,
+            'disabled' => $isElementDisabled,
+            'config' => $wysiwygConfig
         ));
 
         // Setting custom renderer for content field to remove label column
