@@ -40,7 +40,7 @@ class Lesti_Blog_Model_Archive extends Varien_Object
         if (! $this->getMonth()) {
             return $this->getYear();
         }
-        
+        $dateStr = "1-{$this->getMonth()}-{$this->getYear()}";
         if (! is_string($format)) {
             $format = "MMMM Y";
         }
