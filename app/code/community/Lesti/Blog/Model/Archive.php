@@ -41,11 +41,11 @@ class Lesti_Blog_Model_Archive extends Varien_Object
             return $this->getYear();
         }
         
-        $dateStr = "1-{$this->getMonth()}-{$this->getYear()}";
         if (! is_string($format)) {
-            $format = "%B %Y";
+            $format = "MMMM Y";
         }
-        return strftime($format, strtotime($dateStr));
+        $helper = Mage::helper('blog');
+        return $helper->formatDate(strtotime($dateStr), $format);
     }
     
     /**
